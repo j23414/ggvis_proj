@@ -72,3 +72,5 @@ ggvis(myMtcars, props(x = ~disp, y = ~mpg,  size.brush := 400, key := ~keys)) +
   layer_point() + tooltip(show_model)
 ```
 
+Verifying if I can commit changes.
+----
