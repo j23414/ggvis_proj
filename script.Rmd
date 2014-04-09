@@ -1,0 +1,74 @@
+Project
+========================================================
+
+Conversion of ggplot to ggvis
+ggvis.rstudio.com/layers.html#layer_path
+
+```{r}
+#install ggvis
+devtools::install_github(c("hadley/testthat", "rstudio/shiny", "rstudio/ggvis"))
+
+# load ggvis
+library(ggvis)
+library(maps)
+library(ggplot2)
+
+# load Map of States, and US Cities data
+all_states<-map_data("state")
+data(us.cities)
+us.cities<-subset(us.cities,lat<55)
+us.cities<-subset(us.cities,lat>24)
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  if(x$lat<min(us.cities$lat) | x$lat>max(us.cities$lat)) return(NULL)
+  if(x$long<min(us.cities$long) | x$long>max(us.cities$long)) return(NULL)
+  t<-subset(us.cities, lat==x$lat)
+  t<-subset(t, long==x$long)
+  if(dim(t)[1]<1) return(NULL)
+  
+  paste(t$name, collapse="<br />")
+  #paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+ggvis(all_states,props(x=~long,y=~lat))+layer_path(data=by_group(group))+layer_point(data=us.cities)+brush_tooltip(all_values)
+
+dimnames(mtcars)[1]
+
+qvis(us.cities,~long,~lat)+tooltip(all_values)
+
+data(mtcars)
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  paste0(names(x), ": ", format(x), collapse = "<br />")
+}
+
+# Display tooltip when hovering over objects
+qvis(mtcars, ~wt, ~mpg) + tooltip(all_values)
+
+# Display tooltip when objects are clicked
+qvis(mtcars, ~wt, ~mpg) + click_tooltip(all_values)
+input_select()
+
+myMTcars
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  class(x)
+}
+
+ggvis(myMTcars, props(x=1disp,y=~mpg,size.brush=:=400,key:=~keys))+layer_point()+tooltip(show_model)
+```
+
+```{r}
+myMtcars <- mtcars
+myMtcars$keys <- seq(1, nrow(myMtcars))    							 
+show_model <- function(x=NULL) {
+  if(is.null(x)) return(NULL)
+  key <- x["keys"][[1]]
+  rownames(myMtcars)[key]
+}									 
+ggvis(myMtcars, props(x = ~disp, y = ~mpg,  size.brush := 400, key := ~keys)) +
+  layer_point() + tooltip(show_model)
+```
+
