@@ -1,4 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
-ggviz_proj.Rproj
+*.Rproj
+*.html
+*.md
+ggvis_output

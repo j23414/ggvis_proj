@@ -1,11 +1,56 @@
-Project
+GGVIS PROJECT
 ========================================================
+**Team:** Junzhao Hu (junhu), Andreea Erciulescu (andreeae), Jennifer Chang (jenchang), Guillermo Basulto-Elias (basulto)
+
+**Description:**
+
+The idea of today's lab is the same as the one two weeks ago: you are asked to provide a shiny applicaiton that allows the user to select US cities to be included in a route across the country.
+
+This time, the applicaiton is supposed to be based on ggvis and enhanced by interactive functionality.
+
+(1) Construct a map of the US using ggvis. Add points of all available cities on top of the map
+
+```{r, eval=FALSE}
+# Installs Required Libraries, including ggvis
+install.packages("devtools","maps","ggplot2")
+library(devtools)
+devtools::install_github(c("hadley/testthat", "rstudio/shiny", "rstudio/ggvis"))
+
+# Load Libraries
+library(ggvis)
+library(maps)
+library(ggplot2)
+
+# load Map of States, and US Cities data
+all_states<-map_data("state")
+data(us.cities)
+us.cities<-subset(us.cities,lat>24 & lat<55) # get rid of Alaska and Hawii Cities
+
+# Plot Cities on US Map using ggvis
+ggvis(all_states,props(x=~long,y=~lat))+layer_path(data=by_group(group))+layer_point(data=us.cities)
+```
+ggvis produces an html page. A svg of the plot is included here.
+
+<embed type="image/svg+xml" src="img/cities.svg" />
+
+(2) Add interactions
+* Using tooltip brushing, display the name of the city when hovering over it. 
+* Using tooltip clicking, add a city to the current route.  Make cities that are part of the route bigger in size (and/or change color?) and connect them by a path reflecting the order in which they have been added.
+
+```{r,eval=FALSE}
+# put whatever works here
+```
 
 Conversion of ggplot to ggvis
 ggvis.rstudio.com/layers.html#layer_path
 
-```{r}
-#install ggvis
+Workspace: Anything after this is our old code. Feel free to edit. 
+===============
+
+```{r, eval=FALSE}
+# install ggvis
+install.packages("devtools")
+library(devtools)
 devtools::install_github(c("hadley/testthat", "rstudio/shiny", "rstudio/ggvis"))
 
 # load ggvis
@@ -58,9 +103,7 @@ all_values <- function(x) {
 }
 
 ggvis(myMTcars, props(x=1disp,y=~mpg,size.brush=:=400,key:=~keys))+layer_point()+tooltip(show_model)
-```
 
-```{r}
 myMtcars <- mtcars
 myMtcars$keys <- seq(1, nrow(myMtcars))    							 
 show_model <- function(x=NULL) {
