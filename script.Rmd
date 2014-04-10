@@ -110,6 +110,9 @@ ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point() + tooltip(show_citie
 * Using tooltip clicking, add a city to the current route.  Make cities that are part of the route bigger in size (and/or change color?) and connect them by a path reflecting the order in which they have been added.
 
 ```{r,eval=FALSE}
+# Add a column to check if us.cities is on path
+us.cities$on_path=(us.cities$name=="heaven") 
+
 # Create an empty path
 path<-data.frame(name=character(),
                  country.etc=character(),
@@ -124,11 +127,12 @@ add_to_path <- function(x) {
   temp<-subset(us.cities,lat==x["lat"][[1]] & long==x["long"][[1]])
   if(dim(temp)[1]<1) return(NULL)
   path<<-rbind(path,temp)
+  us.cities[us.cities$name==temp$name,]$on_path<<-TRUE
   paste(c("Path:", path$name), collapse="<br />")
 }
 
 states<-unique(all_states$region)
-ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point() + tooltip(show_cities) + 
+ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point(props(fill=~as.factor(on_path))) + tooltip(show_cities) + 
   layer_path(data=subset(all_states, region==states[1])) +
   layer_path(data=subset(all_states, region==states[2])) +
   layer_path(data=subset(all_states, region==states[3])) +
