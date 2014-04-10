@@ -45,6 +45,8 @@ show_cities <- function(x) {
 }
 
 ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point() + layer_path(data=all_states)+ tooltip(show_cities) 
+
+#ggvis(us.cities, props(x= ~long,y = ~ lat)) +  layer(all_states, layer_path(data = by_group(group)))+layer_point() + tooltip(show_cities) 
 ```
 Generates the following picture. 
 
@@ -104,13 +106,81 @@ ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point() + tooltip(show_citie
   layer_path(data=subset(all_states, region==states[47])) +
   layer_path(data=subset(all_states, region==states[48])) +
   layer_path(data=subset(all_states, region==states[49]))
-
-#ggvis(us.cities, props(x= ~long,y = ~ lat)) +  layer(all_states, layer_path(data = by_group(group)))+layer_point() + tooltip(show_cities) 
 ```
 * Using tooltip clicking, add a city to the current route.  Make cities that are part of the route bigger in size (and/or change color?) and connect them by a path reflecting the order in which they have been added.
 
 ```{r,eval=FALSE}
-# put whatever works here
+# Create an empty path
+path<-data.frame(name=character(),
+                 country.etc=character(),
+                 pop=integer(),
+                 lat=numeric(),
+                 long=numeric(),
+                 capital=integer()
+                 )
+
+add_to_path <- function(x) {
+  if(is.null(x)) return(NULL)
+  temp<-subset(us.cities,lat==x["lat"][[1]] & long==x["long"][[1]])
+  if(dim(temp)[1]<1) return(NULL)
+  path<<-rbind(path,temp)
+  paste(c("Path:", path$name), collapse="<br />")
+}
+
+states<-unique(all_states$region)
+ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point() + tooltip(show_cities) + 
+  layer_path(data=subset(all_states, region==states[1])) +
+  layer_path(data=subset(all_states, region==states[2])) +
+  layer_path(data=subset(all_states, region==states[3])) +
+  layer_path(data=subset(all_states, region==states[4])) +
+  layer_path(data=subset(all_states, region==states[5])) +
+  layer_path(data=subset(all_states, region==states[6])) +
+  layer_path(data=subset(all_states, region==states[7])) +
+  layer_path(data=subset(all_states, region==states[8])) +
+  layer_path(data=subset(all_states, region==states[9])) +
+  layer_path(data=subset(all_states, region==states[10])) +
+  layer_path(data=subset(all_states, region==states[11])) +
+  layer_path(data=subset(all_states, region==states[12])) +
+  layer_path(data=subset(all_states, region==states[13])) +
+  layer_path(data=subset(all_states, region==states[14])) +
+  layer_path(data=subset(all_states, region==states[15])) +
+  layer_path(data=subset(all_states, region==states[16])) +
+  layer_path(data=subset(all_states, region==states[17])) +
+  layer_path(data=subset(all_states, region==states[18])) +
+  layer_path(data=subset(all_states, region==states[19])) +
+  layer_path(data=subset(all_states, region==states[20])) +
+  layer_path(data=subset(all_states, region==states[21])) +
+  layer_path(data=subset(all_states, region==states[22])) +
+  layer_path(data=subset(all_states, region==states[23])) +
+  layer_path(data=subset(all_states, region==states[24])) +
+  layer_path(data=subset(all_states, region==states[25])) +
+  layer_path(data=subset(all_states, region==states[26])) +
+  layer_path(data=subset(all_states, region==states[27])) +
+  layer_path(data=subset(all_states, region==states[28])) +
+  layer_path(data=subset(all_states, region==states[29])) +
+  layer_path(data=subset(all_states, region==states[30])) +
+  layer_path(data=subset(all_states, region==states[31])) +
+  layer_path(data=subset(all_states, region==states[32])) +
+  layer_path(data=subset(all_states, region==states[33])) +
+  layer_path(data=subset(all_states, region==states[34])) +
+  layer_path(data=subset(all_states, region==states[35])) +
+  layer_path(data=subset(all_states, region==states[36])) +
+  layer_path(data=subset(all_states, region==states[37])) +
+  layer_path(data=subset(all_states, region==states[38])) +
+  layer_path(data=subset(all_states, region==states[39])) +
+  layer_path(data=subset(all_states, region==states[10])) +
+  layer_path(data=subset(all_states, region==states[41])) +
+  layer_path(data=subset(all_states, region==states[42])) +
+  layer_path(data=subset(all_states, region==states[43])) +
+  layer_path(data=subset(all_states, region==states[44])) +
+  layer_path(data=subset(all_states, region==states[45])) +
+  layer_path(data=subset(all_states, region==states[46])) +
+  layer_path(data=subset(all_states, region==states[47])) +
+  layer_path(data=subset(all_states, region==states[48])) +
+  layer_path(data=subset(all_states, region==states[49])) +
+  click_tooltip(add_to_path)
+
++ layer_path(data=path)
 ```
 
 Conversion of ggplot to ggvis
