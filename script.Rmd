@@ -25,7 +25,7 @@ library(shiny)
 # Load Map of States, and US Cities data
 all_states<-map_data("state")
 data(us.cities)
-us.cities<-subset(us.cities,country.etc!='AK' & country.etc!='HI') # get rid of Cities in Alaska or Hawaii
+us.cities<-subset(us.cities,country.etc!='AK' & country.etc!='HI') # keep only the contiguous US territory
 
 # Plot Cities on US Map using ggvis
 ggvis(all_states,props(x=~long,y=~lat))+layer_path(data=by_group(group))+layer_point(data=us.cities)
@@ -219,7 +219,6 @@ all_values <- function(x) {
   if(dim(t)[1]<1) return(NULL)
   
   paste(t$name, collapse="<br />")
-  #paste0(names(x), ": ", format(x), collapse = "<br />")
 }
 
 ggvis(all_states,props(x=~long,y=~lat))+layer_path(data=by_group(group))+layer_point(data=us.cities)+brush_tooltip(all_values)
