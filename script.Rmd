@@ -187,6 +187,8 @@ ggvis(us.cities, props(x = ~long, y = ~lat)) +layer_point(props(fill=~as.factor(
 + layer_path(data=path)
 ```
 
+<!-- Comments
+
 Conversion of ggplot to ggvis
 ggvis.rstudio.com/layers.html#layer_path
 
@@ -271,3 +273,4 @@ ggvis(us.cities, props(x = ~long, y = ~lat,  size.brush := 400)) +layer_point() 
 
 Verifying if I can commit changes.
 ----
+-->
